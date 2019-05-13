@@ -86,7 +86,7 @@ def get_id_result():
             print('n:',n)
 
     #print('record:',record)
-    with open('ye512_audio_val.pickle','wb') as f:
+    with open(save_pickle,'wb') as f:
         pickle.dump(record,f)
 
 
@@ -109,6 +109,7 @@ def get_id_result():
 
 
 if __name__ == '__main__':
-    wav_files='/home/data_warehouse/ansix/aiqiyi/2019_dataset/IQIYI_VID_DATA_2019/IQIYI_2019_WAV_VAL/'
-    #wav_files='/home/data_warehouse/ansix/aiqiyi/2019_dataset/IQIYI_VID_DATA_2019/IQIYI_2019_WAV_TRAIN/'
+    wav_files='/home/data/WAV_VAL/'
+    #wav_files='/home/data/WAV_TRAIN/'
+    save_pickle='ye512_audio_val.pickle'
     get_id_result()
