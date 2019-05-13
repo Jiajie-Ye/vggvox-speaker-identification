@@ -57,6 +57,24 @@ def vggvox_model():
 	m = Model(inp, x, name='VGGVox')
 	return m
 
+def vggvox_model_output512():
+	inp = Input(c.INPUT_SHAPE,name='input')  #input=(512,None,1)
+	x = conv_bn_pool(inp,layer_idx=1,conv_filters=96,conv_kernel_size=(7,7),conv_strides=(2,2),conv_pad=(1,1),
+		pool='max',pool_size=(3,3),pool_strides=(2,2))
+	x = conv_bn_pool(x,layer_idx=2,conv_filters=256,conv_kernel_size=(5,5),conv_strides=(2,2),conv_pad=(1,1),
+		pool='max',pool_size=(3,3),pool_strides=(2,2))
+	x = conv_bn_pool(x,layer_idx=3,conv_filters=384,conv_kernel_size=(3,3),conv_strides=(1,1),conv_pad=(1,1))
+	x = conv_bn_pool(x,layer_idx=4,conv_filters=256,conv_kernel_size=(3,3),conv_strides=(1,1),conv_pad=(1,1))
+	x = conv_bn_pool(x,layer_idx=5,conv_filters=256,conv_kernel_size=(3,3),conv_strides=(1,1),conv_pad=(1,1),
+		pool='max',pool_size=(5,3),pool_strides=(3,2))
+	x = conv_bn_dynamic_apool(x,layer_idx=6,conv_filters=4096,conv_kernel_size=(9,1),conv_strides=(1,1),conv_pad=(0,0),
+		conv_layer_prefix='fc')
+	x = conv_bn_pool(x,layer_idx=7,conv_filters=1024,conv_kernel_size=(1,1),conv_strides=(1,1),conv_pad=(0,0),
+		conv_layer_prefix='fc')
+	x = Lambda(lambda y: K.l2_normalize(y, axis=3), name='norm')(x)
+	x = Conv2D(filters=1024,kernel_size=(1,1), strides=(1,1), padding='valid', name='fc8')(x)
+	m = Model(inp, x, name='VGGVox')
+	return m
 
 def test():
 	model = vggvox_model()
