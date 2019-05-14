@@ -72,7 +72,7 @@ def vggvox_model_output512():
 	x = conv_bn_pool(x,layer_idx=7,conv_filters=1024,conv_kernel_size=(1,1),conv_strides=(1,1),conv_pad=(0,0),
 		conv_layer_prefix='fc')
 	x = Lambda(lambda y: K.l2_normalize(y, axis=3), name='norm')(x)
-	x = Conv2D(filters=1024,kernel_size=(1,1), strides=(1,1), padding='valid', name='fc8')(x)
+	x = Conv2D(filters=512,kernel_size=(1,1), strides=(1,1), padding='valid', name='fc8')(x)
 	m = Model(inp, x, name='VGGVox')
 	return m
 
